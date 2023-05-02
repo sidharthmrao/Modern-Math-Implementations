@@ -24,12 +24,7 @@ for i in verifier_possibilities:
     if len(current_valid_possibilities) == 1:
         remaining_verifiers.append((i, current_valid_possibilities))
 
-possibilities = [x[1][0] for x in remaining_verifiers]
-
-for i in possibilities:
-    print(i)
-print("---")
-
+remaining_possibilities = [x[1][0] for x in remaining_verifiers]
 
 # With 4
 verifier_sets = combinations([verifiers[0].verifiers, verifiers[1].verifiers, verifiers[2].verifiers, verifiers[3].verifiers, verifiers[4].verifiers], 4)
@@ -50,15 +45,84 @@ for i in verifier_possibilities:
         if i.verify_all(j):
             current_valid_possibilities.append(j)
 
-    if len(current_valid_possibilities) > 1:
-        remaining_verifiers.append((i, current_valid_possibilities))
+    if len(current_valid_possibilities) == 1:
+        try:
+            remaining_possibilities.remove(current_valid_possibilities[0])
+        except:
+            pass
 
-print(remaining_verifiers)
+# With 3
+verifier_sets = combinations([verifiers[0].verifiers, verifiers[1].verifiers, verifiers[2].verifiers, verifiers[3].verifiers, verifiers[4].verifiers], 3)
 
-remaining_possibilities = []
-for i in possibilities:
-    if any(x[0].verify_all(i) for x in remaining_verifiers) and i not in remaining_possibilities:
-        remaining_possibilities.append(i)
+verifier_possibilities = []
+for i in verifier_sets:
+    verifier_possibilities += [
+        Validity_Collection(0, [a, b, c]) for a in i[0] for b in i[1] for c in
+        i[2]
+    ]
+
+remaining_verifiers = []
+
+current_valid_possibilities = []
+for i in verifier_possibilities:
+    current_valid_possibilities = []
+    for j in possibilities:
+        if i.verify_all(j):
+            current_valid_possibilities.append(j)
+
+    if len(current_valid_possibilities) == 1:
+        try:
+            remaining_possibilities.remove(current_valid_possibilities[0])
+        except:
+            pass
+
+# With 2
+verifier_sets = combinations([verifiers[0].verifiers, verifiers[1].verifiers, verifiers[2].verifiers, verifiers[3].verifiers, verifiers[4].verifiers], 2)
+
+verifier_possibilities = []
+for i in verifier_sets:
+    verifier_possibilities += [
+        Validity_Collection(0, [a, b]) for a in i[0] for b in i[1]
+    ]
+
+remaining_verifiers = []
+
+current_valid_possibilities = []
+for i in verifier_possibilities:
+    current_valid_possibilities = []
+    for j in possibilities:
+        if i.verify_all(j):
+            current_valid_possibilities.append(j)
+
+    if len(current_valid_possibilities) == 1:
+        try:
+            remaining_possibilities.remove(current_valid_possibilities[0])
+        except:
+            pass
+
+# With 1
+verifier_sets = combinations([verifiers[0].verifiers, verifiers[1].verifiers, verifiers[2].verifiers, verifiers[3].verifiers, verifiers[4].verifiers], 1)
+
+verifier_possibilities = []
+for i in verifier_sets:
+    verifier_possibilities += [
+        Validity_Collection(0, [a]) for a in i[0]
+    ]
+
+remaining_verifiers = []
+
+current_valid_possibilities = []
+for i in verifier_possibilities:
+    current_valid_possibilities = []
+    for j in possibilities:
+        if i.verify_all(j):
+            current_valid_possibilities.append(j)
+
+    if len(current_valid_possibilities) == 1:
+        try:
+            remaining_possibilities.remove(current_valid_possibilities[0])
+        except:
+            pass
 
 for i in remaining_possibilities:
     print(i)
