@@ -35,7 +35,8 @@ def check_ambiguity():
 # verifiers = [verifier_13, verifier_25, verifier_31, verifier_33, verifier_40, verifier_42]
 # verifiers = [verifier_7, verifier_10, verifier_14, verifier_17, verifier_22]
 # verifiers = [verifier_2, verifier_12, verifier_17, verifier_21, verifier_22]
-verifiers = [verifier_7, verifier_9, verifier_15, verifier_17, verifier_21]
+# verifiers = [verifier_7, verifier_9, verifier_15, verifier_17, verifier_21]
+verifiers = [verifier_5, verifier_21, verifier_23, verifier_25, verifier_32, verifier_48]
 
 possibilities = [
     Code([x, y, z]) for x in range(1, 6) for y in range(1, 6) for z in range(1, 6)

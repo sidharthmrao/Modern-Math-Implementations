@@ -69,6 +69,12 @@ verifier_4 = Verifier(4, [
     Check(lambda c: c.numbers[1] > 4, "if num[1] > 4"),
 ])
 
+# Check if the first number is even or odd
+verifier_5 = Verifier(5, [
+    Check(lambda c: c.numbers[0] % 2 == 0, "if num[0] is even"),
+    Check(lambda c: c.numbers[0] % 2 == 1, "if num[0] is odd"),
+])
+
 # Checks if the third number is even or odd
 verifier_7 = Verifier(7, [
     Check(lambda c: c.numbers[2] % 2 == 0, "if num[2] is even"),
@@ -181,6 +187,20 @@ verifier_22 = Verifier(22, [
     Check(lambda c: not (c.numbers[0] < c.numbers[1] < c.numbers[2]) and not (c.numbers[0] > c.numbers[1] > c.numbers[2]), "if neither")
 ])
 
+# Compares the sum of all numbers to 6
+verifier_23 = Verifier(23, [
+    Check(lambda c: sum(c.numbers) < 6, "if sum of nums < 6"),
+    Check(lambda c: sum(c.numbers) == 6, "if sum of nums == 6"),
+    Check(lambda c: sum(c.numbers) > 6, "if sum of nums > 6"),
+])
+
+# Checks if a specific number is greater than 3
+verifier_32 = Verifier(32, [
+    Check(lambda c: c.numbers[0] > 3, "if num[0] > 3"),
+    Check(lambda c: c.numbers[1] > 3, "if num[1] > 3"),
+    Check(lambda c: c.numbers[2] > 3, "if num[2] > 3"),
+])
+
 # Checks if no sequence of numbers ascending or descending, two numbers ascending or descending, or all numbers
 # ascending or descending
 verifier_25 = Verifier(25, [
@@ -239,5 +259,18 @@ verifier_42 = Verifier(42, [
     Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2], "if num[0] largest"),
     Check(lambda c: c.numbers[1] > c.numbers[0] and c.numbers[1] > c.numbers[2], "if num[1] largest"),
     Check(lambda c: c.numbers[2] > c.numbers[0] and c.numbers[2] > c.numbers[1], "if num[2] largest"),
+])
+
+# Compares one specific number to another
+verifier_48 = Verifier(48, [
+    Check(lambda c: c.numbers[0] < c.numbers[1], "if num[0] < num[1]"),
+    Check(lambda c: c.numbers[0] == c.numbers[1], "if num[0] == num[1]"),
+    Check(lambda c: c.numbers[0] > c.numbers[1], "if num[0] > num[1]"),
+    Check(lambda c: c.numbers[0] < c.numbers[2], "if num[0] < num[2]"),
+    Check(lambda c: c.numbers[0] == c.numbers[2], "if num[0] == num[2]"),
+    Check(lambda c: c.numbers[0] > c.numbers[2], "if num[0] > num[2]"),
+    Check(lambda c: c.numbers[1] < c.numbers[2], "if num[1] < num[2]"),
+    Check(lambda c: c.numbers[1] == c.numbers[2], "if num[1] == num[2]"),
+    Check(lambda c: c.numbers[1] > c.numbers[2], "if num[1] > num[2]"),
 ])
 
