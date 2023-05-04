@@ -12,8 +12,30 @@ def get_valid(check, code_list):
     return remaining
 
 
+# Check ambiguity: Credit to Jewon
+def check_ambiguity():
+    blacklist = []
+    checks_to_possibilities = {}
+    for i in verifiers:
+        for j in i.checks:
+            checks_to_possibilities[j] = set(get_valid(j, possibilities))
+
+    for i in checks_to_possibilities:
+        for j in checks_to_possibilities:
+            if i != j and checks_to_possibilities[i].issubset(checks_to_possibilities[j]):
+                blacklist += list(checks_to_possibilities[i])
+
+    return blacklist
+
+
 # verifiers = [verifier_8, verifier_11, verifier_16, verifier_18, verifier_19, verifier_20]
-verifiers = [verifier_4, verifier_9, verifier_12, verifier_15, verifier_18]
+# verifiers = [verifier_4, verifier_9, verifier_12, verifier_15, verifier_18]
+# verifiers = [verifier_4, verifier_9, verifier_11, verifier_15, verifier_18]
+# verifiers = [verifier_4, verifier_15, verifier_17, verifier_19, verifier_20]
+# verifiers = [verifier_13, verifier_25, verifier_31, verifier_33, verifier_40, verifier_42]
+# verifiers = [verifier_7, verifier_10, verifier_14, verifier_17, verifier_22]
+# verifiers = [verifier_2, verifier_12, verifier_17, verifier_21, verifier_22]
+verifiers = [verifier_7, verifier_9, verifier_15, verifier_17, verifier_21]
 
 possibilities = [
     Code([x, y, z]) for x in range(1, 6) for y in range(1, 6) for z in range(1, 6)
@@ -65,27 +87,13 @@ while n > 0:
 
     n -= 1
 
-
-# Check ambiguity: Credit to Jewon
-def check_ambiguity():
-    blacklist = []
-    checks_to_possibilities = {}
-    for i in verifiers:
-        for j in i.checks:
-            checks_to_possibilities[j] = set(get_valid(j, possibilities))
-
-    for i in checks_to_possibilities:
-        for j in checks_to_possibilities:
-            if i != j and checks_to_possibilities[i].issubset(checks_to_possibilities[j]):
-                blacklist += list(checks_to_possibilities[i])
-
-    return blacklist
-
-
 ambiguous = check_ambiguity()
 for i in ambiguous:
     if i in remaining_possibilities:
         remaining_possibilities.remove(i)
+
+for i in remaining_possibilities:
+    print(i)
 
 
 # Analyze checklist
