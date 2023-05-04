@@ -67,70 +67,70 @@ class Validity_Collection:
 
 # Compares the second number to 4
 verifier_4 = Verifier(4, [
-    Check(lambda c: c.numbers[1] < 4, "Check if num[1] < 4"),
-    Check(lambda c: c.numbers[1] == 4, "Check if num[1] == 4"),
-    Check(lambda c: c.numbers[1] > 4, "Check if num[1] > 4"),
+    Check(lambda c: c.numbers[1] < 4, "if num[1] < 4"),
+    Check(lambda c: c.numbers[1] == 4, "if num[1] == 4"),
+    Check(lambda c: c.numbers[1] > 4, "if num[1] > 4"),
 ])
 
 # Checks how many numbers equal 1
 verifier_8 = Verifier(8, [
-    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 0, "Check if no num == 1"),
-    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 1, "Check if one num == 1"),
-    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 2, "Check if two nums == 1"),
-    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 3, "Check if three nums == 1"),
+    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 0, "if no num == 1"),
+    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 1, "if one num == 1"),
+    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 2, "if two nums == 1"),
+    Check(lambda c: sum([c.numbers[0] == 1, c.numbers[1] == 1, c.numbers[2] == 1]) == 3, "if three nums == 1"),
 ])
 
 # Checks how many numbers equal 3
 verifier_9 = Verifier(9, [
-    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 0, "Check if no num == 3"),
-    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 1, "Check if one num == 3"),
-    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 2, "Check if two nums == 3"),
-    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 3, "Check if three nums == 3"),
+    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 0, "if no num == 3"),
+    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 1, "if one num == 3"),
+    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 2, "if two nums == 3"),
+    Check(lambda c: sum([c.numbers[0] == 3, c.numbers[1] == 3, c.numbers[2] == 3]) == 3, "if three nums == 3"),
 ])
 
 # Compare num[0] to num[1]
 verifier_11 = Verifier(11, [
-    Check(lambda c: c.numbers[0] < c.numbers[1], "Check if num[0] < num[1]"),
-    Check(lambda c: c.numbers[0] == c.numbers[1], "Check if num[0] == num[1]"),
-    Check(lambda c: c.numbers[0] > c.numbers[1], "Check if num[0] > num[1]"),
+    Check(lambda c: c.numbers[0] < c.numbers[1], "if num[0] < num[1]"),
+    Check(lambda c: c.numbers[0] == c.numbers[1], "if num[0] == num[1]"),
+    Check(lambda c: c.numbers[0] > c.numbers[1], "if num[0] > num[1]"),
 ])
 
 # Compares the first number to the third number
 verifier_12 = Verifier(12, [
-    Check(lambda c: c.numbers[0] < c.numbers[2], "Check if num[0] < num[2]"),
-    Check(lambda c: c.numbers[0] == c.numbers[2], "Check if num[0] == num[2]"),
-    Check(lambda c: c.numbers[0] > c.numbers[2], "Check if num[0] > num[2]"),
+    Check(lambda c: c.numbers[0] < c.numbers[2], "if num[0] < num[2]"),
+    Check(lambda c: c.numbers[0] == c.numbers[2], "if num[0] == num[2]"),
+    Check(lambda c: c.numbers[0] > c.numbers[2], "if num[0] > num[2]"),
 ])
 
 # Checks which number is greater than both of the others
 verifier_15 = Verifier(15, [
-    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2], "Check if num[0] smallest"),
-    Check(lambda c: c.numbers[1] > c.numbers[0] and c.numbers[1] > c.numbers[2], "Check if num[1] smallest"),
-    Check(lambda c: c.numbers[2] > c.numbers[0] and c.numbers[2] > c.numbers[1], "Check if num[2] smallest"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2], "if num[0] smallest"),
+    Check(lambda c: c.numbers[1] > c.numbers[0] and c.numbers[1] > c.numbers[2], "if num[1] smallest"),
+    Check(lambda c: c.numbers[2] > c.numbers[0] and c.numbers[2] > c.numbers[1], "if num[2] smallest"),
 ])
 
 # Compares number of even numbers to number of odd numbers
 verifier_16 = Verifier(16, [
-    Check(lambda c: sum([i % 2 == 0 for i in c.numbers]) > sum([i % 2 != 0 for i in c.numbers]), "Check if more even"),
-    Check(lambda c: sum([i % 2 == 0 for i in c.numbers]) < sum([i % 2 != 0 for i in c.numbers]), "Check if more odd"),
+    Check(lambda c: sum([i % 2 == 0 for i in c.numbers]) > sum([i % 2 != 0 for i in c.numbers]), "if more even"),
+    Check(lambda c: sum([i % 2 == 0 for i in c.numbers]) < sum([i % 2 != 0 for i in c.numbers]), "if more odd"),
 ])
 
 # Checks if the sum of numbers is odd or even
 verifier_18 = Verifier(18, [
-    Check(lambda c: sum(c.numbers) % 2 == 0, "Check if sum of nums even"),
-    Check(lambda c: sum(c.numbers) % 2 != 0, "Check if sum of nums odd"),
+    Check(lambda c: sum(c.numbers) % 2 == 0, "if sum of nums even"),
+    Check(lambda c: sum(c.numbers) % 2 != 0, "if sum of nums odd"),
 ])
 
 # Compares the sum of num[0] and num[1] to 6
 verifier_19 = Verifier(19, [
-    Check(lambda c: sum(c.numbers[:2]) < 6, "Check if sum of num[0] and num[1] < 6"),
-    Check(lambda c: sum(c.numbers[:2]) == 6, "Check if sum of num[0] and num[1] == 6"),
-    Check(lambda c: sum(c.numbers[:2]) > 6, "Check if sum of num[0] and num[1] > 6"),
+    Check(lambda c: sum(c.numbers[:2]) < 6, "if sum of num[0] and num[1] < 6"),
+    Check(lambda c: sum(c.numbers[:2]) == 6, "if sum of num[0] and num[1] == 6"),
+    Check(lambda c: sum(c.numbers[:2]) > 6, "if sum of num[0] and num[1] > 6"),
 ])
 
 # Checks if a num repeats itself
 verifier_20 = Verifier(20, [
-    Check(lambda c: len(set(c.numbers)) == 3, "Check if no num repeats"),
-    Check(lambda c: len(set(c.numbers)) == 2, "Check if one num repeats"),
-    Check(lambda c: len(set(c.numbers)) == 1, "Check if two nums repeat"),
+    Check(lambda c: len(set(c.numbers)) == 3, "if no num repeats"),
+    Check(lambda c: len(set(c.numbers)) == 2, "if one num repeats"),
+    Check(lambda c: len(set(c.numbers)) == 1, "if two nums repeat"),
 ])

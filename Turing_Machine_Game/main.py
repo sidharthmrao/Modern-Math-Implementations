@@ -105,5 +105,11 @@ def get_subtree(left_verifiers, possible):
     return current_tree
 
 
-tree = Tree(get_subtree(verifiers, remaining_possibilities))
-print(tree)
+if len(remaining_possibilities) == 0:
+    print("NO SOLUTION")
+elif len(remaining_possibilities) == 1:
+    print("SOLUTION: ", remaining_possibilities[0])
+else:
+    print("DECISION TREE:")
+    tree = Tree(get_subtree(verifiers, remaining_possibilities))
+    print(tree)
