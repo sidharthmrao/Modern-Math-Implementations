@@ -19,16 +19,16 @@ class Check:
 
 
 class Verifier:
-    def __init__(self, number: int, verifiers: list, correct: int = 0):
+    def __init__(self, number: int, verifiers: list[Check], correct: int = 0):
         self.number = number
-        self.verifiers = verifiers
+        self.checks = verifiers
         self.correct = correct
 
     def verify_any(self, code: Code) -> bool:
-        return any(v(code) for v in self.verifiers)
+        return any(v(code) for v in self.checks)
 
     def verify_find(self, code: Code) -> bool:
-        for i in self.verifiers:
+        for i in self.checks:
             if i(code):
                 return i
 
@@ -40,7 +40,7 @@ class Verifier:
     def __str__(self):
         resp = ""
         resp += f"Verifier {self.number} {'{'} \n"
-        for x in self.verifiers:
+        for x in self.checks:
             resp += "\t" + x.__str__() + "\n"
         resp += "}"
 
