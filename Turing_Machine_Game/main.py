@@ -66,6 +66,28 @@ while n > 0:
     n -= 1
 
 
+# Check ambiguity: Credit to Jewon
+def check_ambiguity():
+    blacklist = []
+    checks_to_possibilities = {}
+    for i in verifiers:
+        for j in i.checks:
+            checks_to_possibilities[j] = set(get_valid(j, possibilities))
+
+    for i in checks_to_possibilities:
+        for j in checks_to_possibilities:
+            if i != j and checks_to_possibilities[i].issubset(checks_to_possibilities[j]):
+                blacklist += list(checks_to_possibilities[i])
+
+    return blacklist
+
+
+ambiguous = check_ambiguity()
+for i in ambiguous:
+    if i in remaining_possibilities:
+        remaining_possibilities.remove(i)
+
+
 # Analyze checklist
 def get_next_verifier(possible):
     check_list = []
