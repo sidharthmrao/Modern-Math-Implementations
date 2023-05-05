@@ -135,9 +135,9 @@ verifier_14 = Verifier(14, [
 
 # Checks which number is greater than both of the others
 verifier_15 = Verifier(15, [
-    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2], "if num[0] smallest"),
-    Check(lambda c: c.numbers[1] > c.numbers[0] and c.numbers[1] > c.numbers[2], "if num[1] smallest"),
-    Check(lambda c: c.numbers[2] > c.numbers[0] and c.numbers[2] > c.numbers[1], "if num[2] smallest"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2], "if num[0] greatest"),
+    Check(lambda c: c.numbers[1] > c.numbers[0] and c.numbers[1] > c.numbers[2], "if num[1] greatest"),
+    Check(lambda c: c.numbers[2] > c.numbers[0] and c.numbers[2] > c.numbers[1], "if num[2] greatest"),
 ])
 
 # Compares number of even numbers to number of odd numbers
@@ -194,13 +194,6 @@ verifier_23 = Verifier(23, [
     Check(lambda c: sum(c.numbers) > 6, "if sum of nums > 6"),
 ])
 
-# Checks if a specific number is greater than 3
-verifier_32 = Verifier(32, [
-    Check(lambda c: c.numbers[0] > 3, "if num[0] > 3"),
-    Check(lambda c: c.numbers[1] > 3, "if num[1] > 3"),
-    Check(lambda c: c.numbers[2] > 3, "if num[2] > 3"),
-])
-
 # Checks if no sequence of numbers ascending or descending, two numbers ascending or descending, or all numbers
 # ascending or descending
 verifier_25 = Verifier(25, [
@@ -221,11 +214,25 @@ verifier_25 = Verifier(25, [
     ]
 )
 
+# Checks if a specific number is less than 3
+verifier_26 = Verifier(26, [
+    Check(lambda c: c.numbers[0] < 3, "if num[0] < 3"),
+    Check(lambda c: c.numbers[1] < 3, "if num[1] < 3"),
+    Check(lambda c: c.numbers[2] < 3, "if num[2] < 3"),
+])
+
 # Checks if a specific number is greater than 1
 verifier_31 = Verifier(31, [
     Check(lambda c: c.numbers[0] > 1, "if num[0] > 1"),
     Check(lambda c: c.numbers[1] > 1, "if num[1] > 1"),
     Check(lambda c: c.numbers[2] > 1, "if num[2] > 1"),
+])
+
+# Checks if a specific number is greater than 3
+verifier_32 = Verifier(32, [
+    Check(lambda c: c.numbers[0] > 3, "if num[0] > 3"),
+    Check(lambda c: c.numbers[1] > 3, "if num[1] > 3"),
+    Check(lambda c: c.numbers[2] > 3, "if num[2] > 3"),
 ])
 
 # Checks if a specific number is even or odd
@@ -236,6 +243,23 @@ verifier_33 = Verifier(33, [
     Check(lambda c: c.numbers[1] % 2 != 0, "if num[1] odd"),
     Check(lambda c: c.numbers[2] % 2 == 0, "if num[2] even"),
     Check(lambda c: c.numbers[2] % 2 != 0, "if num[2] odd"),
+])
+
+# Checks if the sum of 2 specific numbers equals 6
+verifier_38 = Verifier(38, [
+    Check(lambda c: c.numbers[0] + c.numbers[1] == 6, "if num[0] + num[1] == 6"),
+    Check(lambda c: c.numbers[0] + c.numbers[2] == 6, "if num[0] + num[2] == 6"),
+    Check(lambda c: c.numbers[1] + c.numbers[2] == 6, "if num[1] + num[2] == 6"),
+])
+
+# Compares a specific number to 1
+verifier_39 = Verifier(39, [
+    Check(lambda c: c.numbers[0] == 1, "if num[0] == 1"),
+    Check(lambda c: c.numbers[0] > 1, "if num[0] > 1"),
+    Check(lambda c: c.numbers[1] == 1, "if num[1] == 1"),
+    Check(lambda c: c.numbers[1] > 1, "if num[1] > 1"),
+    Check(lambda c: c.numbers[2] == 1, "if num[2] == 1"),
+    Check(lambda c: c.numbers[2] > 1, "if num[2] > 1"),
 ])
 
 # Compares a specific number to 3
@@ -251,7 +275,7 @@ verifier_40 = Verifier(40, [
     Check(lambda c: c.numbers[2] > 3, "if num[2] > 3"),
 ])
 
-# Checks which number is the smallest or largest
+# Checks which specific number is the smallest or largest
 verifier_42 = Verifier(42, [
     Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] < c.numbers[2], "if num[0] smallest"),
     Check(lambda c: c.numbers[1] < c.numbers[0] and c.numbers[1] < c.numbers[2], "if num[1] smallest"),
