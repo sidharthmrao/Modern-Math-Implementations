@@ -12,6 +12,14 @@ def get_valid(check, code_list):
     return remaining
 
 
+def find_intersection(set_list: list[set]):
+    intersect = set_list[0]
+    for s in set_list[1:]:
+        intersect = intersect.intersection(s)
+
+    return intersect
+
+
 # verifiers = [verifier_8, verifier_11, verifier_16, verifier_18, verifier_19, verifier_20]
 # verifiers = [verifier_4, verifier_9, verifier_12, verifier_15, verifier_18]
 # verifiers = [verifier_4, verifier_9, verifier_11, verifier_15, verifier_18]
@@ -25,66 +33,47 @@ def get_valid(check, code_list):
 # verifiers = [verifier_9, verifier_11, verifier_13, verifier_26, verifier_31]
 verifiers = [verifier_10, verifier_22, verifier_26, verifier_39, verifier_48]
 
+possibilities: set[str] = {
+    f"{x}{y}{z}" for x in range(1, 6) for y in range(1, 6) for z in range(1, 6)
+}
 
-possibilities = [
-    Code([x, y, z]) for x in range(1, 6) for y in range(1, 6) for z in range(1, 6)
-]
-remaining_possibilities = possibilities.copy()
-remaining_possibilities2 = []
+whitelist: set[str] = set()
 
-n = len(verifiers)
+for verifier in verifiers:
+    verifier.set_up(possibilities)
 
-while n > 0:
-    verifier_sets = combinations(
-        [i.checks for i in verifiers], n
-    )
+code_set_combos = list(product(*[verifier.sets for verifier in verifiers]))
 
-    possible_collections = []
+# Whitelist numbers that appear alone in a combination of 5 checks
+for combo in code_set_combos:
+    intersection = find_intersection(combo)
+    if len(intersection) == 1:
+        intersect = intersection.pop()
+        whitelist.add(intersect)
 
-    for i in verifier_sets:
-        possible_collections.append(list(product(*i)))
+print(whitelist)
 
-    verifier_possibilities = []
+# Eliminate numbers that appear in intersections with only one possibility
+non_specific_verifiers = [verifier for verifier in verifiers if verifier.specific is False]
 
-    for i in possible_collections:
-        for j in i:
-            verifier_possibilities.append(Validity_Collection(0, j))
+verifier_combos = list(combinations(non_specific_verifiers, len(non_specific_verifiers) - 1))
+# verifier_combos = list(combinations(verifiers, len(verifiers)))
+verifier_based_code_set_combos = []
+for i in verifier_combos:
+    verifier_based_code_set_combos.append(list(product(*[verifier.sets for verifier in i])))
 
-    if n == len(verifiers):
-        remaining_verifiers = []
+for verifier in verifiers:
+    verifier.set_up(whitelist)
 
-        current_valid_possibilities = []
-        for i in verifier_possibilities:
-            current_valid_possibilities = []
-            for j in possibilities:
-                if i.verify_all(j):
-                    current_valid_possibilities.append(j)
+for verifier_combo in verifier_based_code_set_combos:
+    for combo in verifier_combo:
+        intersection = find_intersection(combo)
+        if len(intersection) == 1:
+            intersect = intersection.pop()
+            if intersect in whitelist:
+                whitelist.remove(intersect)
 
-            if len(current_valid_possibilities) == 1:
-                remaining_verifiers.append((i, current_valid_possibilities))
-
-        remaining_possibilities = [x[1][0] for x in remaining_verifiers]
-    else:
-        current_valid_possibilities = []
-        for i in verifier_possibilities:
-            current_valid_possibilities = []
-            for j in possibilities:
-                if i.verify_all(j):
-                    current_valid_possibilities.append(j)
-
-            if len(current_valid_possibilities) == 1 and current_valid_possibilities[0] in remaining_possibilities:
-                remaining_possibilities.remove(current_valid_possibilities[0])
-
-    n -= 1
-
-remaining_possibilities = list(set(remaining_possibilities))
-
-print("Num Possibilities: ", len(remaining_possibilities))
-
-for i in remaining_possibilities:
-    print(i)
-
-print("")
+print(whitelist)
 
 
 # Analyze checklist
@@ -120,20 +109,20 @@ def get_subtree(left_verifiers, possible):
         elif len(temp_remaining_possibilities) > 1:
             verifier_string = "Verifier " + str(next_verifier.number) + " " + str(i)
             new_verifiers = left_verifiers.copy()
-            try:
-                new_verifiers.remove(next_verifier)
-                current_tree[verifier_string] = get_subtree(new_verifiers, temp_remaining_possibilities)
-            except:
-                pass
+            new_verifiers.remove(next_verifier)
+            current_tree[verifier_string] = get_subtree(new_verifiers, temp_remaining_possibilities)
 
     return current_tree
 
 
-if len(remaining_possibilities) == 0:
+whitelist = list(whitelist)
+print(whitelist)
+
+if len(whitelist) == 0:
     print("NO SOLUTION")
-elif len(remaining_possibilities) == 1:
-    print("SOLUTION: ", remaining_possibilities[0])
+elif len(whitelist) == 1:
+    print("SOLUTION: ", whitelist[0])
 else:
     print("DECISION TREE:")
-    tree = Tree(get_subtree(verifiers, remaining_possibilities))
+    tree = Tree(get_subtree(verifiers, whitelist))
     print(tree)

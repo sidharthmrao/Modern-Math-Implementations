@@ -1,3 +1,6 @@
+from itertools import product
+
+
 class Code:
     def __init__(self, numbers: list[int, int, int]):
         self.numbers = numbers
@@ -12,6 +15,7 @@ class Check:
         self.description = description
 
     def __call__(self, x):
+        x = Code([int(y) for y in list(x)])
         return self.check(x)
 
     def __str__(self):
@@ -19,13 +23,28 @@ class Check:
 
 
 class Verifier:
-    def __init__(self, number: int, verifiers: list[Check], correct: int = 0):
+    def __init__(self, number: int, verifiers: list[Check], correct: int = 0, specific=False):
         self.number = number
-        self.checks = verifiers
+        self.checks: list[Check] = verifiers
         self.correct = correct
+        self.sets: list[set] = []
+        self.specific = specific
 
-    def verify_any(self, code: Code) -> bool:
+    def verify_any(self, code: str) -> bool:
         return any(v(code) for v in self.checks)
+
+    def verify_find(self, code: str):
+        for x in self.checks:
+            if x(code):
+                return x
+
+    def set_up(self, code_list: list[Code]):
+        self.sets = []
+        for x in self.checks:
+            self.sets.append(set([]))
+            for y in code_list:
+                if x(y):
+                    self.sets[-1].add(y)
 
     def __str__(self):
         resp = ""
@@ -216,24 +235,35 @@ verifier_25 = Verifier(25, [
 
 # Checks if a specific number is less than 3
 verifier_26 = Verifier(26, [
-    Check(lambda c: c.numbers[0] < 3, "if num[0] < 3"),
-    Check(lambda c: c.numbers[1] < 3, "if num[1] < 3"),
-    Check(lambda c: c.numbers[2] < 3, "if num[2] < 3"),
-])
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] < 3 and c.numbers[2] < 3, "if num[0] < 3"),
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] < 3 and c.numbers[2] >= 3, "if num[0] < 3"),
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] >= 3 and c.numbers[2] < 3, "if num[0] < 3"),
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] >= 3 and c.numbers[2] >= 3, "if num[0] < 3"),
+
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] < 3 and c.numbers[2] < 3, "if num[1] < 3"),
+    Check(lambda c: c.numbers[0] >= 3 and c.numbers[1] < 3 and c.numbers[2] < 3, "if num[1] < 3"),
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] < 3 and c.numbers[2] >= 3, "if num[1] < 3"),
+    Check(lambda c: c.numbers[0] >= 3 and c.numbers[1] < 3 and c.numbers[2] >= 3, "if num[1] < 3"),
+
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] < 3 and c.numbers[2] < 3, "if num[2] < 3"),
+    Check(lambda c: c.numbers[0] >= 3 and c.numbers[1] < 3 and c.numbers[2] < 3, "if num[2] < 3"),
+    Check(lambda c: c.numbers[0] < 3 and c.numbers[1] >= 3 and c.numbers[2] < 3, "if num[2] < 3"),
+    Check(lambda c: c.numbers[0] >= 3 and c.numbers[1] >= 3 and c.numbers[2] < 3, "if num[2] < 3"),
+], specific=True)
 
 # Checks if a specific number is greater than 1
 verifier_31 = Verifier(31, [
     Check(lambda c: c.numbers[0] > 1, "if num[0] > 1"),
     Check(lambda c: c.numbers[1] > 1, "if num[1] > 1"),
     Check(lambda c: c.numbers[2] > 1, "if num[2] > 1"),
-])
+], specific=True)
 
 # Checks if a specific number is greater than 3
 verifier_32 = Verifier(32, [
     Check(lambda c: c.numbers[0] > 3, "if num[0] > 3"),
     Check(lambda c: c.numbers[1] > 3, "if num[1] > 3"),
     Check(lambda c: c.numbers[2] > 3, "if num[2] > 3"),
-])
+], specific=True)
 
 # Checks if a specific number is even or odd
 verifier_33 = Verifier(33, [
@@ -243,24 +273,47 @@ verifier_33 = Verifier(33, [
     Check(lambda c: c.numbers[1] % 2 != 0, "if num[1] odd"),
     Check(lambda c: c.numbers[2] % 2 == 0, "if num[2] even"),
     Check(lambda c: c.numbers[2] % 2 != 0, "if num[2] odd"),
-])
+], specific=True)
 
 # Checks if the sum of 2 specific numbers equals 6
 verifier_38 = Verifier(38, [
     Check(lambda c: c.numbers[0] + c.numbers[1] == 6, "if num[0] + num[1] == 6"),
     Check(lambda c: c.numbers[0] + c.numbers[2] == 6, "if num[0] + num[2] == 6"),
     Check(lambda c: c.numbers[1] + c.numbers[2] == 6, "if num[1] + num[2] == 6"),
-])
+], specific=True)
 
 # Compares a specific number to 1
 verifier_39 = Verifier(39, [
-    Check(lambda c: c.numbers[0] == 1, "if num[0] == 1"),
-    Check(lambda c: c.numbers[0] > 1, "if num[0] > 1"),
-    Check(lambda c: c.numbers[1] == 1, "if num[1] == 1"),
-    Check(lambda c: c.numbers[1] > 1, "if num[1] > 1"),
-    Check(lambda c: c.numbers[2] == 1, "if num[2] == 1"),
-    Check(lambda c: c.numbers[2] > 1, "if num[2] > 1"),
-])
+    Check(lambda c: c.numbers[0] == 1 and c.numbers[1] == 1 and c.numbers[2] == 1, "if num[0] == 1"),
+    Check(lambda c: c.numbers[0] == 1 and c.numbers[1] > 1 and c.numbers[2] == 1, "if num[0] == 1"),
+    Check(lambda c: c.numbers[0] == 1 and c.numbers[1] == 1 and c.numbers[2] > 1, "if num[0] == 1"),
+    Check(lambda c: c.numbers[0] == 1 and c.numbers[1] > 1 and c.numbers[2] > 1, "if num[0] == 1"),
+
+    Check(lambda c: c.numbers[0] > 1 and c.numbers[1] == 1 and c.numbers[2] == 1, "if num[0] > 1"),
+    Check(lambda c: c.numbers[0] > 1 and c.numbers[1] > 1 and c.numbers[2] == 1, "if num[0] > 1"),
+    Check(lambda c: c.numbers[0] > 1 and c.numbers[1] == 1 and c.numbers[2] > 1, "if num[0] > 1"),
+    Check(lambda c: c.numbers[0] > 1 and c.numbers[1] > 1 and c.numbers[2] > 1, "if num[0] > 1"),
+
+    Check(lambda c: c.numbers[1] == 1 and c.numbers[0] == 1 and c.numbers[2] == 1, "if num[1] == 1"),
+    Check(lambda c: c.numbers[1] == 1 and c.numbers[0] > 1 and c.numbers[2] == 1, "if num[1] == 1"),
+    Check(lambda c: c.numbers[1] == 1 and c.numbers[0] == 1 and c.numbers[2] > 1, "if num[1] == 1"),
+    Check(lambda c: c.numbers[1] == 1 and c.numbers[0] > 1 and c.numbers[2] > 1, "if num[1] == 1"),
+
+    Check(lambda c: c.numbers[1] > 1 and c.numbers[0] == 1 and c.numbers[2] == 1, "if num[1] > 1"),
+    Check(lambda c: c.numbers[1] > 1 and c.numbers[0] > 1 and c.numbers[2] == 1, "if num[1] > 1"),
+    Check(lambda c: c.numbers[1] > 1 and c.numbers[0] == 1 and c.numbers[2] > 1, "if num[1] > 1"),
+    Check(lambda c: c.numbers[1] > 1 and c.numbers[0] > 1 and c.numbers[2] > 1, "if num[1] > 1"),
+
+    Check(lambda c: c.numbers[2] == 1 and c.numbers[1] == 1 and c.numbers[0] == 1, "if num[2] == 1"),
+    Check(lambda c: c.numbers[2] == 1 and c.numbers[1] > 1 and c.numbers[0] == 1, "if num[2] == 1"),
+    Check(lambda c: c.numbers[2] == 1 and c.numbers[1] == 1 and c.numbers[0] > 1, "if num[2] == 1"),
+    Check(lambda c: c.numbers[2] == 1 and c.numbers[1] > 1 and c.numbers[0] > 1, "if num[2] == 1"),
+
+    Check(lambda c: c.numbers[2] > 1 and c.numbers[1] == 1 and c.numbers[0] == 1, "if num[2] > 1"),
+    Check(lambda c: c.numbers[2] > 1 and c.numbers[1] > 1 and c.numbers[0] == 1, "if num[2] > 1"),
+    Check(lambda c: c.numbers[2] > 1 and c.numbers[1] == 1 and c.numbers[0] > 1, "if num[2] > 1"),
+    Check(lambda c: c.numbers[2] > 1 and c.numbers[1] > 1 and c.numbers[0] > 1, "if num[2] > 1"),
+], specific=True)
 
 # Compares a specific number to 3
 verifier_40 = Verifier(40, [
@@ -273,7 +326,7 @@ verifier_40 = Verifier(40, [
     Check(lambda c: c.numbers[2] < 3, "if num[2] < 3"),
     Check(lambda c: c.numbers[2] == 3, "if num[2] == 3"),
     Check(lambda c: c.numbers[2] > 3, "if num[2] > 3"),
-])
+], specific=True)
 
 # Checks which specific number is the smallest or largest
 verifier_42 = Verifier(42, [
@@ -283,18 +336,35 @@ verifier_42 = Verifier(42, [
     Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2], "if num[0] largest"),
     Check(lambda c: c.numbers[1] > c.numbers[0] and c.numbers[1] > c.numbers[2], "if num[1] largest"),
     Check(lambda c: c.numbers[2] > c.numbers[0] and c.numbers[2] > c.numbers[1], "if num[2] largest"),
-])
+], specific=True)
 
 # Compares one specific number to another
 verifier_48 = Verifier(48, [
-    Check(lambda c: c.numbers[0] < c.numbers[1], "if num[0] < num[1]"),
-    Check(lambda c: c.numbers[0] == c.numbers[1], "if num[0] == num[1]"),
-    Check(lambda c: c.numbers[0] > c.numbers[1], "if num[0] > num[1]"),
-    Check(lambda c: c.numbers[0] < c.numbers[2], "if num[0] < num[2]"),
-    Check(lambda c: c.numbers[0] == c.numbers[2], "if num[0] == num[2]"),
-    Check(lambda c: c.numbers[0] > c.numbers[2], "if num[0] > num[2]"),
-    Check(lambda c: c.numbers[1] < c.numbers[2], "if num[1] < num[2]"),
-    Check(lambda c: c.numbers[1] == c.numbers[2], "if num[1] == num[2]"),
-    Check(lambda c: c.numbers[1] > c.numbers[2], "if num[1] > num[2]"),
-])
-
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] < c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] == c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] < c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] == c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] < c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] == c.numbers[2], "verifier_48_check"),
+    Check(lambda c: c.numbers[0] > c.numbers[1] and c.numbers[0] > c.numbers[2] and c.numbers[1] > c.numbers[2], "verifier_48_check")
+], specific=True)
